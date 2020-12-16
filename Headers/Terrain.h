@@ -4,6 +4,7 @@ class Terrain : public Component
 {
 public:
     Terrain(Component *parent);
+    ~Terrain();
 
     void load(int time);
     void update(int time);

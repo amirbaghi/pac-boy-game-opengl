@@ -6,6 +6,7 @@ class MainCharacter : public Component
 {
 public:
     MainCharacter(Component *parent);
+    ~MainCharacter();
 
     void load(int time);
     void update(int time);

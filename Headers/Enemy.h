@@ -5,6 +5,7 @@ class Enemy : public Component
 {
 public:
     Enemy(Component* parent);
+    ~Enemy();
 
     void load(int time);
     void update(int time);
@@ -24,6 +25,6 @@ private:
     Direction direction;
     // Texture id of the character
     GLuint texture_id;
-    
+
 protected:
 };

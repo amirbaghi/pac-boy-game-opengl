@@ -5,6 +5,7 @@ class Obstacle : public Component
 {
 public:
     Obstacle(Component *parent);
+    ~Obstacle();
 
     void load(int time);
     void update(int time);

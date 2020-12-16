@@ -3,12 +3,11 @@
 #include "Headers/Terrain.h"
 #include "Headers/Enemy.h"
 #include "Headers/Obstacle.h"
+#include "Headers/Point.h"
 
 Game::Game() : Component(NULL)
 {
-    auto time = glutGet(GLUT_ELAPSED_TIME);
     this->game = this;
-    this->created_time = time;
 }
 
 Game::~Game()
@@ -38,11 +37,19 @@ void Game::load(int time)
     obstacle1->setPosition(90, 90, 100, 100);
     this->obstacles.push_back(obstacle1);
 
+    Point *point1 = new Point(this);
+    point1->setPosition(300, 300);
+    this->points.push_back(point1);
+
+
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->load(time);
 
     for (auto obs = this->obstacles.begin(); obs < this->obstacles.end(); obs++)
         (*obs)->load(time);
+    
+    for (auto point = this->points.begin(); point < this->points.end(); point++)
+        (*point)->load(time);
     
 }
 
@@ -56,17 +63,23 @@ void Game::update(int time)
 
     for (auto obs = this->obstacles.begin(); obs < this->obstacles.end(); obs++)
         (*obs)->update(time);
+
+    for (auto point = this->points.begin(); point < this->points.end(); point++)
+        (*point)->update(time);
 }
 
 void Game::render(int time)
 {
-    mainCharacter->render(time);
     terrain->render(time);
+    mainCharacter->render(time);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->render(time);
 
     for (auto obs = this->obstacles.begin(); obs < this->obstacles.end(); obs++)
         (*obs)->render(time);
+
+    for (auto point = this->points.begin(); point < this->points.end(); point++)
+        (*point)->render(time);
 }
 

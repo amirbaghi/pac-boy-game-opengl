@@ -4,6 +4,7 @@ class Enemy;
 class MainCharacter;
 class Obstacle;
 class Terrain;
+class Point;
 
 // Game class, inheriting from Component class
 class Game : public Component
@@ -20,6 +21,7 @@ private:
 protected:
     std::vector<Enemy *> enemies;
     std::vector<Obstacle *> obstacles;
+    std::vector<Point *> points;
     Terrain *terrain;
     MainCharacter *mainCharacter;
 };
