@@ -1,21 +1,28 @@
-#include "Headers/Terrain.h"
+#include "Headers/Point.h"
 #include "Headers/SOIL.h"
 
-Terrain::Terrain(Component* parent) : Component(parent)
+
+Point::Point(Component* parent):Component(parent)
 {
 
 }
 
-Terrain::~Terrain()
+Point::~Point()
 {
 
 }
 
-void Terrain::load(int time)
+void Point::setPosition(int x, int y)
+{
+    this->x = x;
+    this->y = y;
+}
+
+void Point::load(int time)
 {
     int width, height;
 
-    auto texture_data = SOIL_load_image("Resources/tile.png", &width, &height, 0, SOIL_LOAD_RGBA);
+    auto texture_data = SOIL_load_image("Resources/point.png", &width, &height, 0, SOIL_LOAD_RGBA);
 
     GLuint txid;
 
@@ -29,15 +36,14 @@ void Terrain::load(int time)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
     this->texture_id = txid;
-
 }
 
-void Terrain::update(int time)
+void Point::update(int time)
 {
 
 }
 
-void Terrain::render(int time)
+void Point::render(int time)
 {
     glBindTexture(GL_TEXTURE_2D, this->texture_id);
     glBegin(GL_QUADS);
@@ -51,3 +57,4 @@ void Terrain::render(int time)
     glVertex2f(0.0, 600.0);
     glEnd();
 }
+

@@ -5,6 +5,7 @@ class Point : public Component
 public:
 
     Point(Component* parent);
+    ~Point();
 
     void load(int time);
     void update(int time);
