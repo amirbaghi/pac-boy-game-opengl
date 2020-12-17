@@ -15,7 +15,7 @@ public:
 
 private:
     // Lower-left corner of the rectangle (x1, y1) and the upper-right one (x2, y2)
-    int x1, x2, y2, y2;
+    int x1, x2, y1, y2;
     // Texture id of the obstacle
     GLuint texture_id;
 
