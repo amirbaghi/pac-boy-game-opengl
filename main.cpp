@@ -1,11 +1,26 @@
 #include "Headers/Game.h"
 #include <GL/glut.h>
 
-Game* game;
+Game *game;
+
+void keyboard(int key, int x, int y)
+{
+    auto time = glutGet(GLUT_ELAPSED_TIME);
+    game->keyboard(time, key, x, y);
+}
+
+void keyboard_up(int key, int x, int y)
+{
+    auto time = glutGet(GLUT_ELAPSED_TIME);
+    game->keyboard_up(time, key, x, y);
+}
 
 void init()
 {
     glEnable(GL_BLEND);
+
+    // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     game = new Game();
@@ -13,7 +28,6 @@ void init()
     auto time = glutGet(GLUT_ELAPSED_TIME);
 
     game->load(time);
-
 }
 
 void render()
@@ -44,6 +58,9 @@ int main(int argc, char **argv)
 
     glutDisplayFunc(render);
     glutIdleFunc(render);
+    glutSpecialFunc(keyboard);
+    glutIgnoreKeyRepeat(1);
+    glutSpecialUpFunc(keyboard_up);
     glutMainLoop();
 
     delete game;

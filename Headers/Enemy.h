@@ -29,7 +29,7 @@ private:
     int offset_x, offset_y;
     // Initial time of the start of the current motion
     int init_motion_time;
-    // Initial Frame, and the Current Frame of the character (Either 1 or 2)
+    // Initial Frame, and the Current Frame of the character (Either 0 or 1)
     int init_frame, current_frame;
     // Direction of the character
     Direction direction;

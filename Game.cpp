@@ -14,13 +14,39 @@ Game::~Game()
 {
 }
 
+void Game::keyboard(int time, int key, int x, int y)
+{
+    switch (key)
+    {
+    case GLUT_KEY_UP:
+        mainCharacter->up(time);
+        break;
+    case GLUT_KEY_DOWN:
+        mainCharacter->down(time);
+        break;
+    case GLUT_KEY_RIGHT:
+        mainCharacter->right(time);
+        break;
+    case GLUT_KEY_LEFT:
+        mainCharacter->left(time);
+        break;
+    default:
+        break;
+    }
+}
+
+void Game::keyboard_up(int time, int key, int x, int y)
+{
+    mainCharacter->stop(time);
+}
+
 void Game::load(int time)
 {
 
-    // MainCharacter *mainCharacter = new MainCharacter(this);
-    // mainCharacter->setInitialPosition(500, 500);
-    // this->mainCharacter = mainCharacter;
-    // mainCharacter->load(time);
+    MainCharacter *mainCharacter = new MainCharacter(this);
+    mainCharacter->setInitialMotionPositionAndTime(500, 500, time);
+    this->mainCharacter = mainCharacter;
+    mainCharacter->load(time);
 
     Terrain *terrain = new Terrain(this);
     terrain->load(time);
@@ -56,7 +82,8 @@ void Game::load(int time)
 
 void Game::update(int time)
 {
-    // mainCharacter->update(time);
+    // TODO: check if the game is over now, all the points are taken
+    mainCharacter->update(time);
     terrain->update(time);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
@@ -72,7 +99,7 @@ void Game::update(int time)
 void Game::render(int time)
 {
     terrain->render(time);
-    // mainCharacter->render(time);
+    mainCharacter->render(time);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->render(time);

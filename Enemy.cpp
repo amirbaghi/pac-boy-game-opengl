@@ -47,7 +47,7 @@ void Enemy::load(int time)
     setDirection((Direction)randDirection, time);
 
     // Setting a random intial frame
-    auto randFrame = 1 + (std::rand() % (2 - 1 + 1));
+    auto randFrame = 0 + (std::rand() % (1 - 0 + 1));
 
     setInitialFrame(randFrame);
     setFrame(randFrame);
@@ -85,6 +85,8 @@ void Enemy::update(int time)
     // TODO: check for collision with an obstacle and change Direction based on that and select a random starting frame
 
     // TODO: check for collision with the main character and end the game if so
+
+    // TODO: check if it's out of bounds or not
 }
 
 void Enemy::render(int time)
