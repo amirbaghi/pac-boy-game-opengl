@@ -21,7 +21,9 @@ public:
 
     // MainCharacter Getter
     MainCharacter *getMainCharacter();
-    
+    // Obstacles Getter
+    std::vector<Obstacle *> getObstacles();
+
     // Event handling methods
     void keyboard(int time, int key, int x, int y);
     void keyboard_up(int time, int key, int x, int y);

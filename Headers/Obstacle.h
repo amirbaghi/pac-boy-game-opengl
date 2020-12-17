@@ -12,6 +12,16 @@ public:
     void load(int time);
     void update(int time);
     void render(int time);
+
+    // x1 Getter 
+    int getX1();
+    // y1 Getter
+    int getY1();
+    // x2 Getter
+    int getX2();
+    // y2 Getter
+    int getY2();
+
     // Method to set the position of this obstacle
     void setPosition(int x1, int y1, int x2, int y2);
 

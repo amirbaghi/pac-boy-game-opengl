@@ -10,6 +10,26 @@ Obstacle::~Obstacle()
 
 }
 
+int Obstacle::getX1()
+{
+    return x1;
+}
+
+int Obstacle::getY1()
+{
+    return y1;
+}
+
+int Obstacle::getX2()
+{
+    return x2;
+}
+
+int Obstacle::getY2()
+{
+    return y2;
+}
+
 void Obstacle::setPosition(int x1, int y1, int x2, int y2)
 {
     this->x1 = x1;

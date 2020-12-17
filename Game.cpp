@@ -19,6 +19,11 @@ MainCharacter* Game::getMainCharacter()
     return this->mainCharacter;
 }
 
+std::vector<Obstacle *> Game::getObstacles()
+{
+    return this->obstacles;
+}
+
 void Game::keyboard(int time, int key, int x, int y)
 {
     switch (key)

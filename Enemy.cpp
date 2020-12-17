@@ -3,6 +3,8 @@
 #include "Headers/Game.h"
 #include "Headers/Component.h"
 #include "Headers/MainCharacter.h"
+#include "Headers/Obstacle.h"
+#include "Headers/Utils.h"
 
 Enemy::Enemy(Component *parent) : Component(parent)
 {
@@ -83,10 +85,12 @@ void Enemy::update(int time)
     // Updating the frame of the character
     this->current_frame = (this->init_frame + (1 * diffTime)) % 2;
 
-    // Check for the main character in its col or row and turn towards it
     Game *game = dynamic_cast<Game *>(parent_component);
+
+    // Check for the main character in its col or row and turn towards it
     MainCharacter *mainCharacter = game->getMainCharacter();
-    // If the enemy and the character are in the same column
+
+    // If the enemy and the character are in the same column (Considering their widths) 
     if (abs((mainCharacter->getCurrentXPosition()) - (this->init_x + this->offset_x)) < 10)
     {
         // The main character is above
@@ -107,7 +111,7 @@ void Enemy::update(int time)
         }
     }
 
-    // If the enemy and the character are in the same row
+    // If the enemy and the character are in the same row (Considering their widths)
     else if (abs((mainCharacter->getCurrentYPosition()) - (this->init_y + this->offset_y)) < 10)
     {
         // The main character is to the right
@@ -128,7 +132,42 @@ void Enemy::update(int time)
         }
     }
 
-    // TODO: check for collision with an obstacle and change Direction based on that and select a random starting frame
+    // Check for collision with an obstacle and change Direction based on that
+
+    std::vector<Obstacle *> obstacles = game->getObstacles();
+
+    auto width = 30;
+    auto height = 30;
+
+    // TODO: CHANGE THE POSITION OF THE ENEMEY THEN SET DIRECTION
+    for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
+    {
+        auto width2 = (*obs)->getX2() - (*obs)->getX1();
+        auto height2 = (*obs)->getY2() - (*obs)->getY1();
+
+        if (Utils::collision((this->init_x + this->offset_x) - 15, (this->init_y + this->offset_y) - 15, width,
+                             height, (*obs)->getX1(), (*obs)->getY1(), width2, height2))
+        {
+            switch (direction)
+            {
+            case UP:
+                setDirection(DOWN, time);
+                break;
+            case DOWN:
+                setDirection(UP, time);
+                break;
+            case RIGHT:
+                setDirection(LEFT, time);
+                break;
+            case LEFT:
+                setDirection(RIGHT, time);
+                break;
+            default:
+                break;
+            }
+            break;
+        }
+    }
 
     // TODO: check for collision with the main character and end the game if so
 

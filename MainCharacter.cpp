@@ -1,4 +1,7 @@
 #include "Headers/MainCharacter.h"
+#include "Headers/Game.h"
+#include "Headers/Obstacle.h"
+#include "Headers/Utils.h"
 
 MainCharacter::MainCharacter(Component *parent) : Component(parent)
 {
@@ -133,7 +136,45 @@ void MainCharacter::update(int time)
         // Updating the frame of the character
         this->current_frame = (this->init_frame + (1 * diffTime)) % 2;
 
-        // TODO: check for collision with an obstacle 
+
+        Game *game = dynamic_cast<Game *>(parent_component);
+        
+
+        // Check for collision with an obstacle 
+        std::vector<Obstacle *> obstacles = game->getObstacles();
+
+        auto width = 30;
+        auto height = 30;
+
+        // TODO: DONT SET DIRECTION, CHANGE THE POSITION OF THE MAIN CHARACTER AND MAKE IT STOP
+        for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
+        {
+            auto width2 = (*obs)->getX2() - (*obs)->getX1();
+            auto height2 = (*obs)->getY2() - (*obs)->getY1();
+
+            if (Utils::collision((this->init_x + this->offset_x) - 15, (this->init_y + this->offset_y) - 15, width,
+                                 height, (*obs)->getX1(), (*obs)->getY1(), width2, height2))
+            {
+                switch (direction)
+                {
+                case UP:
+                    setDirection(DOWN, time);
+                    break;
+                case DOWN:
+                    setDirection(UP, time);
+                    break;
+                case RIGHT:
+                    setDirection(LEFT, time);
+                    break;
+                case LEFT:
+                    setDirection(RIGHT, time);
+                    break;
+                default:
+                    break;
+                }
+                break;
+            }
+        }
 
         // TODO: check for collision with a point and add to score
 
