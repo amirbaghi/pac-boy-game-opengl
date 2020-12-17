@@ -19,20 +19,9 @@ void Point::setPosition(int x, int y)
 
 void Point::load(int time)
 {
-    int width, height;
-
-    auto texture_data = SOIL_load_image("point.png", &width, &height, 0, SOIL_LOAD_RGBA);
-
-    GLuint txid;
 
     glEnable(GL_TEXTURE_2D);
-    glGenTextures(1, &txid);
-    glBindTexture(GL_TEXTURE_2D, txid);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+    GLuint txid = SOIL_load_OGL_texture("point.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 
     this->texture_id = txid;
 }
@@ -47,13 +36,13 @@ void Point::render(int time)
     glBindTexture(GL_TEXTURE_2D, this->texture_id);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex2f(this->x - 2, this->y - 2);
+    glVertex2f(this->x - 10, this->y - 10);
     glTexCoord2f(1, 0);
-    glVertex2f(this->x + 2, this->y - 2);
+    glVertex2f(this->x + 10, this->y - 10);
     glTexCoord2f(1, 1);
-    glVertex2f(this->x + 2, this->y + 2);
+    glVertex2f(this->x + 10, this->y + 10);
     glTexCoord2f(0, 1);
-    glVertex2f(this->x - 2, this->y + 2);
+    glVertex2f(this->x - 10, this->y + 10);
     glEnd();
 }
 

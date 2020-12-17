@@ -12,20 +12,8 @@ Terrain::~Terrain()
 
 void Terrain::load(int time)
 {
-    int width, height;
 
-    auto texture_data = SOIL_load_image("tile.png", &width, &height, 0, SOIL_LOAD_RGBA);
-
-    GLuint txid;
-
-    glEnable(GL_TEXTURE_2D);
-    glGenTextures(1, &txid);
-    glBindTexture(GL_TEXTURE_2D, txid);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+    GLuint txid = SOIL_load_OGL_texture("tile.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 
     this->texture_id = txid;
 

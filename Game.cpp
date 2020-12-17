@@ -31,11 +31,11 @@ void Game::load(int time)
     this->enemies.push_back(enemy1);
 
     Enemy *enemy2 = new Enemy(this);
-    enemy2->setInitialMotionPositionAndTime(200, 200, time);
+    enemy2->setInitialMotionPositionAndTime(400, 400, time);
     this->enemies.push_back(enemy2);
 
     Obstacle *obstacle1 = new Obstacle(this);
-    obstacle1->setPosition(90, 90, 100, 100);
+    obstacle1->setPosition(90, 90, 120, 120);
     this->obstacles.push_back(obstacle1);
 
     Point *point1 = new Point(this);

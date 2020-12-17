@@ -16,7 +16,7 @@ public:
     // Method to set the initial position of the character (Also sets the initial time of the motion)
     void setInitialMotionPositionAndTime(int x, int y, int time); 
     // Method to set the direction of the character, also calls the setInitialMotionPositionAndTime to change the initial motion factors
-    void setDirection(Direction direction);
+    void setDirection(Direction direction, int time);
     // Method to set the initial frame
     void setInitialFrame(int frame);
     // Method to set the frame of the character
