@@ -1,5 +1,4 @@
 #include "Headers/Obstacle.h"
-#include "SOIL.h"
 
 Obstacle::Obstacle(Component* parent) : Component(parent)
 {

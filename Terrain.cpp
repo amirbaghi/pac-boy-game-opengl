@@ -1,5 +1,4 @@
 #include "Headers/Terrain.h"
-#include "Headers/SOIL.h"
 
 Terrain::Terrain(Component* parent) : Component(parent)
 {

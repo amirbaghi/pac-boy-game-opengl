@@ -1,5 +1,4 @@
 #include "Headers/Point.h"
-#include "Headers/SOIL.h"
 
 
 Point::Point(Component* parent):Component(parent)

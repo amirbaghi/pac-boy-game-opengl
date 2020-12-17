@@ -1,4 +1,5 @@
 #include <vector>
+#include "SOIL.h"
 #include <GL/glut.h>
 
 class Game;
