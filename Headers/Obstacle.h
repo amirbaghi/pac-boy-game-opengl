@@ -1,3 +1,5 @@
+#ifndef OBSTACLE_H
+#define OBSTACLE_H
 #include "Component.h"
 
 // Obstacle Component, inheriting from Component class
@@ -21,3 +23,5 @@ private:
 
 protected:
 };
+
+#endif

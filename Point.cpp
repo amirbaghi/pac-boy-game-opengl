@@ -21,7 +21,7 @@ void Point::load(int time)
 {
     int width, height;
 
-    auto texture_data = SOIL_load_image("Resources/point.png", &width, &height, 0, SOIL_LOAD_RGBA);
+    auto texture_data = SOIL_load_image("point.png", &width, &height, 0, SOIL_LOAD_RGBA);
 
     GLuint txid;
 

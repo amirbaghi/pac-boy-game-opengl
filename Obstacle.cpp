@@ -22,7 +22,7 @@ void Obstacle::load(int time)
 {
     int width, height;
 
-    auto texture_data = SOIL_load_image("Resources/tile.png", &width, &height, 0, SOIL_LOAD_RGBA);
+    auto texture_data = SOIL_load_image("bricks.png", &width, &height, 0, SOIL_LOAD_RGBA);
 
     GLuint txid;
 

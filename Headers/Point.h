@@ -1,3 +1,5 @@
+#ifndef POINT_H
+#define POINT_H
 #include "Component.h"
 
 class Point : public Component
@@ -22,3 +24,4 @@ private:
 
 protected:
 };
+#endif

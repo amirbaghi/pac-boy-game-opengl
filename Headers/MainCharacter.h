@@ -1,3 +1,5 @@
+#ifndef MAIN_CHARACTER_H
+#define MAIN_CHARACTER_H
 #include "Component.h"
 #include "Direction.h"
 #include "MotionState.h"
@@ -33,3 +35,5 @@ private:
 
 protected:
 };
+
+#endif

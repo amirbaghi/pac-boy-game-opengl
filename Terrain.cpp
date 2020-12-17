@@ -14,7 +14,7 @@ void Terrain::load(int time)
 {
     int width, height;
 
-    auto texture_data = SOIL_load_image("Resources/tile.png", &width, &height, 0, SOIL_LOAD_RGBA);
+    auto texture_data = SOIL_load_image("tile.png", &width, &height, 0, SOIL_LOAD_RGBA);
 
     GLuint txid;
 
@@ -39,6 +39,8 @@ void Terrain::update(int time)
 void Terrain::render(int time)
 {
     glBindTexture(GL_TEXTURE_2D, this->texture_id);
+
+    glColor4f(0.2, 0.0, 0.5, 0.5);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
     glVertex2f(0.0, 0.0);
@@ -49,4 +51,6 @@ void Terrain::render(int time)
     glTexCoord2f(0, 1);
     glVertex2f(0.0, 600.0);
     glEnd();
+    
+    glColor4f(1.0, 1.0, 1.0, 1.0);
 }

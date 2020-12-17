@@ -1,3 +1,5 @@
+#ifndef GAME_H
+#define GAME_H
 #include "Component.h"
 
 class Enemy;
@@ -25,3 +27,5 @@ protected:
     Terrain *terrain;
     MainCharacter *mainCharacter;
 };
+
+#endif

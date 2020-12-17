@@ -1,3 +1,6 @@
+#ifndef TERRAIN_H
+#define TERRAIN_H
+
 #include "Component.h"
 
 class Terrain : public Component
@@ -16,3 +19,5 @@ private:
 
 protected:
 };
+
+#endif

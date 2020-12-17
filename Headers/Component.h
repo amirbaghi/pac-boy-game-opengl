@@ -1,3 +1,6 @@
+#ifndef COMPONENT_H
+#define COMPONENT_H
+
 #include <vector>
 #include "SOIL.h"
 #include <GL/glut.h>
@@ -11,7 +14,7 @@ public:
     Component(Component *parent);
 
     // Main methods for each component
-    void virtual load(int time);
+    void virtual load(int time) = 0;
     void virtual update(int time) = 0;
     void virtual render(int time) = 0;
 
@@ -24,3 +27,5 @@ protected:
     // Pointer to the parent component
     Component *parent_component;
 };
+
+#endif

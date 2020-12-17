@@ -17,20 +17,21 @@ Game::~Game()
 void Game::load(int time)
 {
 
-    MainCharacter *mainCharacter = new MainCharacter(this);
-    mainCharacter->setInitialPosition(500, 500);
-    this->mainCharacter = mainCharacter;
-    mainCharacter->load(time);
+    // MainCharacter *mainCharacter = new MainCharacter(this);
+    // mainCharacter->setInitialPosition(500, 500);
+    // this->mainCharacter = mainCharacter;
+    // mainCharacter->load(time);
 
     Terrain *terrain = new Terrain(this);
     terrain->load(time);
+    this->terrain = terrain;
 
     Enemy *enemy1 = new Enemy(this);
-    enemy1->setInitialPosition(200, 200);
+    enemy1->setInitialMotionPositionAndTime(200, 200, time);
     this->enemies.push_back(enemy1);
 
     Enemy *enemy2 = new Enemy(this);
-    enemy2->setInitialPosition(200, 200);
+    enemy2->setInitialMotionPositionAndTime(200, 200, time);
     this->enemies.push_back(enemy2);
 
     Obstacle *obstacle1 = new Obstacle(this);
@@ -55,7 +56,7 @@ void Game::load(int time)
 
 void Game::update(int time)
 {
-    mainCharacter->update(time);
+    // mainCharacter->update(time);
     terrain->update(time);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
@@ -71,7 +72,7 @@ void Game::update(int time)
 void Game::render(int time)
 {
     terrain->render(time);
-    mainCharacter->render(time);
+    // mainCharacter->render(time);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->render(time);
