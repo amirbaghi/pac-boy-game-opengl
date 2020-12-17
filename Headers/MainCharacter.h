@@ -26,6 +26,12 @@ public:
     // Method to change the motion state of the character
     void setMotionState(MotionState newMotionState);
 
+
+    // Current x position Getter
+    int getCurrentXPosition();
+    // Current y position Getter
+    int getCurrentYPosition();
+
     // Methods to handle events related to the character's movement
     void up(int time);
     void down(int time);
@@ -50,6 +56,7 @@ private:
     GLuint texture_id;
 
 protected:
+
 };
 
 #endif

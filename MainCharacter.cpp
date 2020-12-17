@@ -8,6 +8,16 @@ MainCharacter::~MainCharacter()
 {
 }
 
+int MainCharacter::getCurrentXPosition()
+{
+    return (this->init_x + this->offset_x);
+}
+
+int MainCharacter::getCurrentYPosition()
+{
+    return (this->init_y + this->offset_y);
+}
+
 void MainCharacter::setInitialMotionPositionAndTime(int x, int y, int time)
 {
     this->init_x = x;
@@ -127,7 +137,23 @@ void MainCharacter::update(int time)
 
         // TODO: check for collision with a point and add to score
 
-        // TODO: check if it's out of bounds or not
+        // Check if it's out of bounds or not
+        if ((this->init_x + this->offset_x) >= 800.0)
+        {
+            setInitialMotionPositionAndTime(1, this->init_y + this->offset_y, time);
+        }
+        else if ((this->init_x + this->offset_x) <= 0.0)
+        {
+            setInitialMotionPositionAndTime(799, this->init_y + this->offset_y, time);
+        }
+        else if ((this->init_y + this->offset_y) >= 600.0)
+        {
+            setInitialMotionPositionAndTime(this->init_x + this->offset_x, 1, time);
+        }
+        else if ((this->init_y + this->offset_y) <= 0.0)
+        {
+            setInitialMotionPositionAndTime(this->init_x + this->offset_x, 599, time);
+        }
     }
     else if (this->motionState == STANDING)
     {

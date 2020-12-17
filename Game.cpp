@@ -14,6 +14,11 @@ Game::~Game()
 {
 }
 
+MainCharacter* Game::getMainCharacter()
+{
+    return this->mainCharacter;
+}
+
 void Game::keyboard(int time, int key, int x, int y)
 {
     switch (key)
