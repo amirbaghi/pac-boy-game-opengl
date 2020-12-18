@@ -37,13 +37,13 @@ void render()
     game->update(time);
     game->render(time);
 
-    glFlush();
+    glutSwapBuffers();
 }
 
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(800, 600);
     glutCreateWindow("Pac-Man!");
 

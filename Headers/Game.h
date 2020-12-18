@@ -7,6 +7,7 @@ class MainCharacter;
 class Obstacle;
 class Terrain;
 class Point;
+class Score;
 
 // Game class, inheriting from Component class
 class Game : public Component
@@ -28,13 +29,12 @@ public:
     void keyboard(int time, int key, int x, int y);
     void keyboard_up(int time, int key, int x, int y);
 
-
-
 private:
 protected:
     std::vector<Enemy *> enemies;
     std::vector<Obstacle *> obstacles;
     std::vector<Point *> points;
+    Score *score;
     Terrain *terrain;
     MainCharacter *mainCharacter;
 };

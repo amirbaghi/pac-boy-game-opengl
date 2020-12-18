@@ -4,6 +4,7 @@
 #include "Headers/Enemy.h"
 #include "Headers/Obstacle.h"
 #include "Headers/Point.h"
+#include "Headers/Score.h"
 
 Game::Game() : Component(NULL)
 {
@@ -14,7 +15,7 @@ Game::~Game()
 {
 }
 
-MainCharacter* Game::getMainCharacter()
+MainCharacter *Game::getMainCharacter()
 {
     return this->mainCharacter;
 }
@@ -58,6 +59,10 @@ void Game::load(int time)
     this->mainCharacter = mainCharacter;
     mainCharacter->load(time);
 
+    Score *score = new Score(this);
+    score->load(time);
+    this->score = score;
+
     Terrain *terrain = new Terrain(this);
     terrain->load(time);
     this->terrain = terrain;
@@ -78,22 +83,22 @@ void Game::load(int time)
     point1->setPosition(300, 300);
     this->points.push_back(point1);
 
-
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->load(time);
 
     for (auto obs = this->obstacles.begin(); obs < this->obstacles.end(); obs++)
         (*obs)->load(time);
-    
+
     for (auto point = this->points.begin(); point < this->points.end(); point++)
         (*point)->load(time);
-    
 }
 
 void Game::update(int time)
 {
     // TODO: check if the game is over now, all the points are taken
     mainCharacter->update(time);
+
+
     terrain->update(time);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
@@ -104,6 +109,8 @@ void Game::update(int time)
 
     for (auto point = this->points.begin(); point < this->points.end(); point++)
         (*point)->update(time);
+
+    score->update(time);
 }
 
 void Game::render(int time)
@@ -119,5 +126,6 @@ void Game::render(int time)
 
     for (auto point = this->points.begin(); point < this->points.end(); point++)
         (*point)->render(time);
-}
 
+    score->render(time);
+}
