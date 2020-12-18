@@ -67,7 +67,7 @@ void Enemy::update(int time)
     switch (this->direction)
     {
     case UP:
-        this->offset_y = 8 * diffTime;
+        this->offset_y = 6 * diffTime;
         break;
     case DOWN:
         this->offset_y = -6 * diffTime;
@@ -86,11 +86,14 @@ void Enemy::update(int time)
     this->current_frame = (this->init_frame + (3 * diffTime)) % 2;
 
     Game *game = dynamic_cast<Game *>(parent_component);
-
-    // Check for the main character in its col or row and turn towards it
+    std::vector<Obstacle *> obstacles = game->getObstacles();
     MainCharacter *mainCharacter = game->getMainCharacter();
 
-    // If the enemy and the character are in the same column (Considering their widths) 
+    // Check for the main character in its col or row and turn towards it, if there is no obstacle between them
+
+    bool shouldChangeDirection = true;
+
+    // If the enemy and the character are in the same column (Considering their widths)
     if (abs((mainCharacter->getCurrentXPosition()) - (this->init_x + this->offset_x)) < 10)
     {
         // The main character is above
@@ -98,7 +101,22 @@ void Enemy::update(int time)
         {
             if (direction != UP)
             {
-                setDirection(UP, time);
+                // Checking for obstacles between them, and if there is one, we shouldnt change direction
+                for (auto obs = obstacles.begin() ; obs < obstacles.end() ; obs++)
+                {
+                    auto width2 = (*obs)->getX2() - (*obs)->getX1();
+                    auto height2 = (*obs)->getY2() - (*obs)->getY1();
+
+                    if (abs(((*obs)->getX1() + (width2 / 2.0)) - (this->init_x + this->offset_x)) <= 15)
+                    {
+                        shouldChangeDirection = false;
+                        break;
+                    }
+                }
+                if (shouldChangeDirection)
+                {
+                    setDirection(UP, time);
+                }
             }
         }
         // The main character is below
@@ -106,7 +124,22 @@ void Enemy::update(int time)
         {
             if (direction != DOWN)
             {
-                setDirection(DOWN, time);
+                // Checking for obstacles between them, and if there is one, we shouldnt change direction
+                for (auto obs = obstacles.begin() ; obs < obstacles.end() ; obs++)
+                {
+                    auto width2 = (*obs)->getX2() - (*obs)->getX1();
+                    auto height2 = (*obs)->getY2() - (*obs)->getY1();
+
+                    if (abs(((*obs)->getX1() + (width2 / 2.0)) - (this->init_x + this->offset_x)) <= 15)
+                    {
+                        shouldChangeDirection = false;
+                        break;
+                    }
+                }
+                if (shouldChangeDirection)
+                {
+                    setDirection(DOWN, time);
+                }
             }
         }
     }
@@ -119,7 +152,22 @@ void Enemy::update(int time)
         {
             if (direction != RIGHT)
             {
-                setDirection(RIGHT, time);
+                // Checking for obstacles between them, and if there is one, we shouldnt change direction
+                for (auto obs = obstacles.begin() ; obs < obstacles.end() ; obs++)
+                {
+                    auto width2 = (*obs)->getX2() - (*obs)->getX1();
+                    auto height2 = (*obs)->getY2() - (*obs)->getY1();
+
+                    if (abs(((*obs)->getY1() + (height2 / 2.0)) - (this->init_y + this->offset_y)) <= 15)
+                    {
+                        shouldChangeDirection = false;
+                        break;
+                    }
+                }
+                if (shouldChangeDirection)
+                {
+                    setDirection(RIGHT, time);
+                }
             }
         }
         // The main character is below
@@ -127,14 +175,28 @@ void Enemy::update(int time)
         {
             if (direction != LEFT)
             {
-                setDirection(LEFT, time);
+                // Checking for obstacles between them, and if there is one, we shouldnt change direction
+                for (auto obs = obstacles.begin() ; obs < obstacles.end() ; obs++)
+                {
+                    auto width2 = (*obs)->getX2() - (*obs)->getX1();
+                    auto height2 = (*obs)->getY2() - (*obs)->getY1();
+
+                    if (abs(((*obs)->getY1() + (height2 / 2.0)) - (this->init_y + this->offset_y)) <= 15)
+                    {
+                        shouldChangeDirection = false;
+                        break;
+                    }
+                }
+                if (shouldChangeDirection)
+                {
+                    setDirection(LEFT, time);
+                }
             }
         }
     }
 
     // Check for collision with an obstacle and change Direction based on that
 
-    std::vector<Obstacle *> obstacles = game->getObstacles();
 
     auto width = 30;
     auto height = 30;
