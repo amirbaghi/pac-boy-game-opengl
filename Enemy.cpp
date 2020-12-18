@@ -31,6 +31,11 @@ void Enemy::setDirection(Direction direction, int time)
     setInitialMotionPositionAndTime(this->init_x + this->offset_x, this->init_y + this->offset_y, time);
 }
 
+void Enemy::setColor(Color color)
+{
+    this->color = color;
+}
+
 void Enemy::setFrame(int frame)
 {
     this->current_frame = frame;
@@ -52,6 +57,10 @@ void Enemy::load(int time)
     auto randDirection = 0 + (std::rand() % (3 - 0 + 1));
 
     setDirection((Direction)randDirection, time);
+
+    // Setting a random color
+    auto randColor = (std::rand() % (3 - 0 + 1));
+    setColor((Color)randColor);
 
     // Setting a random intial frame
     auto randFrame = 0 + (std::rand() % (1 - 0 + 1));
@@ -331,7 +340,7 @@ void Enemy::render(int time)
     glPushMatrix();
     glTranslatef(this->offset_x + this->init_x, this->offset_y + this->init_y, 0);
 
-    float spriteCol;
+    float spriteCol, spriteRow;
 
     switch (this->direction)
     {
@@ -351,19 +360,37 @@ void Enemy::render(int time)
         break;
     }
 
+    switch (this->color)
+    {
+    case YELLOW:
+        spriteRow = 0;
+        break;
+    case CYAN:
+        spriteRow = 1;
+        break;
+    case PINK:
+        spriteRow = 2;
+        break;
+    case RED:
+        spriteRow = 3;
+        break;    
+    default:
+        break;
+    }
+
     auto col_error = 1 / (6 * 14.0);
     auto row_error = 1 / (6 * 8.0);
     spriteCol += col_error;
 
     glBindTexture(GL_TEXTURE_2D, this->texture_id);
     glBegin(GL_QUADS);
-    glTexCoord2f(spriteCol + (this->current_frame * 1 / 14.0), 3 / 8.0 + row_error);
+    glTexCoord2f(spriteCol + (this->current_frame * 1 / 14.0), (spriteRow * 1 / 8.0) + row_error);
     glVertex2f(-30 / 2.0, -30 / 2.0);
-    glTexCoord2f(spriteCol + (this->current_frame * 1 / 14.0) + 1 / 14.0 - col_error, 3 / 8.0 + row_error);
+    glTexCoord2f(spriteCol + (this->current_frame * 1 / 14.0) + 1 / 14.0 - col_error, (spriteRow * 1 / 8.0) + row_error);
     glVertex2f(30 / 2.0, -30 / 2.0);
-    glTexCoord2f(spriteCol + (this->current_frame * 1 / 14.0) + 1 / 14.0 - col_error, 4 / 8.0);
+    glTexCoord2f(spriteCol + (this->current_frame * 1 / 14.0) + 1 / 14.0 - col_error, (spriteRow * 1 / 8.0) + 1 / 8.0 );
     glVertex2f(30 / 2.0, 30 / 2.0);
-    glTexCoord2f(spriteCol + (this->current_frame * 1 / 14.0), 4 / 8.0);
+    glTexCoord2f(spriteCol + (this->current_frame * 1 / 14.0), (spriteRow * 1 / 8.0) + 1 / 8.0);
     glVertex2f(-30 / 2.0, 30 / 2.0);
     glEnd();
 

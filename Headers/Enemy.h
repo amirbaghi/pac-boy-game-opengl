@@ -2,6 +2,8 @@
 #define ENEMY_H
 #include "Component.h"
 #include "Direction.h"
+#include "Color.h"
+
 
 class Enemy : public Component
 {
@@ -21,6 +23,8 @@ public:
     void setInitialFrame(int frame);
     // Method to set the frame of the character
     void setFrame(int frame);
+    // Method to set the color of the character
+    void setColor(Color color);
 
 private:
     // Initial position in the beginning of the current motion
@@ -33,6 +37,8 @@ private:
     int init_frame, current_frame;
     // Direction of the character
     Direction direction;
+    // Color of the Character
+    Color color;
     // Texture id of the character
     GLuint texture_id;
 

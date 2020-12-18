@@ -1,12 +1,12 @@
-#ifndef COLOR_H
-#define COLOR_H
+#ifndef COLORCHARACTER_H
+#define COLORCHARACTER_H
 
-enum color
+enum Color
 {
     RED,
     PINK,
     CYAN,
     YELLOW
-}
+};
 
 #endif
