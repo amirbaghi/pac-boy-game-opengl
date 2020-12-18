@@ -22,6 +22,8 @@ public:
 
     // Method to generate obstacles
     void generateObstacles();
+    // Method to generate points
+    void generatePoints();
 
     // MainCharacter Getter
     MainCharacter *getMainCharacter();

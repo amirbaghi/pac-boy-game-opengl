@@ -4,6 +4,8 @@
 #include "Headers/Point.h"
 #include "Headers/Utils.h"
 #include "Headers/Score.h"
+#include <iostream>
+#include <ctime>
 
 MainCharacter::MainCharacter(Component *parent) : Component(parent)
 {
@@ -97,6 +99,7 @@ void MainCharacter::load(int time)
     this->texture_id = txid;
 
     // Setting a random direction in the beginning
+    std::srand((unsigned int)std::time(NULL));
     auto randDirection = 0 + (std::rand() % (4 - 0 + 1));
 
     setDirection((Direction)randDirection, time);

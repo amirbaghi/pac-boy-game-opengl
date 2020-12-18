@@ -5,6 +5,7 @@
 #include "Headers/Obstacle.h"
 #include "Headers/Point.h"
 #include "Headers/Score.h"
+#include <ctime>
 
 Game::Game() : Component(NULL)
 {
@@ -35,7 +36,7 @@ void Game::setPoints(std::vector<Point *> points)
     this->points = points;
 }
 
-Score* Game::getScore()
+Score *Game::getScore()
 {
     return this->score;
 }
@@ -124,7 +125,22 @@ void Game::generateObstacles()
     Obstacle *obstacle14 = new Obstacle(this);
     obstacle14->setPosition(522 - 60, 275, 522, 275 + 143, true);
     this->obstacles.push_back(obstacle14);
+}
 
+void Game::generatePoints()
+{
+    std::srand((unsigned int)time(NULL));
+    auto numberOfPoints = 6 + (std::rand() % (20 - 6 + 1));
+
+    for (auto i = 0; i < numberOfPoints; i++)
+    {
+        auto randXPos = 2 + (std::rand() % (798 - 2 + 1));
+        auto randYPos = 2 + (std::rand() % (598 + 1));
+
+        Point *point = new Point(this);
+        point->setPosition(randXPos, randYPos);
+        this->points.push_back(point);
+    }
 }
 void Game::load(int time)
 {
@@ -132,12 +148,10 @@ void Game::load(int time)
     // Generate Obstacles
     generateObstacles();
 
-
-    //TODO: Generate Points
-
+    // Generate Points
+    generatePoints();
 
     //TODO: Generate Enemies
-
 
     MainCharacter *mainCharacter = new MainCharacter(this);
     mainCharacter->setInitialMotionPositionAndTime(500, 500, time);
@@ -152,7 +166,7 @@ void Game::load(int time)
     terrain->load(time);
     this->terrain = terrain;
 
-    // Generate 
+    // Generate
     Enemy *enemy1 = new Enemy(this);
     enemy1->setInitialMotionPositionAndTime(200, 200, time);
     this->enemies.push_back(enemy1);
@@ -165,9 +179,9 @@ void Game::load(int time)
     // obstacle1->setPosition(90, 90, 140, 120);
     // this->obstacles.push_back(obstacle1);
 
-    Point *point1 = new Point(this);
-    point1->setPosition(300, 300);
-    this->points.push_back(point1);
+    // Point *point1 = new Point(this);
+    // point1->setPosition(300, 300);
+    // this->points.push_back(point1);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->load(time);

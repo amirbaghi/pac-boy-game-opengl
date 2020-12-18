@@ -5,6 +5,7 @@
 #include "Headers/MainCharacter.h"
 #include "Headers/Obstacle.h"
 #include "Headers/Utils.h"
+#include <ctime>
 
 Enemy::Enemy(Component *parent) : Component(parent)
 {
@@ -47,6 +48,7 @@ void Enemy::load(int time)
     this->texture_id = txid;
 
     // Setting a random direction in the beginning
+    std::srand((unsigned int)std::time(NULL));
     auto randDirection = 0 + (std::rand() % (4 - 0 + 1));
 
     setDirection((Direction)randDirection, time);
