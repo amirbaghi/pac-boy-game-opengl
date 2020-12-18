@@ -23,7 +23,7 @@ void Score::setScore(int score)
 void Score::load(int time)
 {
     // Set initial score to 0
-    this->score = 19;
+    this->score = 0;
 
     // Load texture
     GLuint txid = SOIL_load_OGL_texture("text_sprite.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
