@@ -49,7 +49,7 @@ void Enemy::load(int time)
 
     // Setting a random direction in the beginning
     std::srand((unsigned int)std::time(NULL));
-    auto randDirection = 0 + (std::rand() % (4 - 0 + 1));
+    auto randDirection = 0 + (std::rand() % (3 - 0 + 1));
 
     setDirection((Direction)randDirection, time);
 

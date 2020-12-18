@@ -5,6 +5,7 @@
 #include "Headers/Obstacle.h"
 #include "Headers/Point.h"
 #include "Headers/Score.h"
+#include "Headers/Utils.h"
 #include <ctime>
 
 Game::Game() : Component(NULL)
@@ -134,39 +135,69 @@ void Game::generatePoints()
 
     for (auto i = 0; i < numberOfPoints; i++)
     {
-        auto randXPos = 2 + (std::rand() % (798 - 2 + 1));
-        auto randYPos = 2 + (std::rand() % (598 + 1));
+        bool doesCollide;
+        int randXPos;
+        int randYPos;
+
+        // While the newly generated point collides an obstacle or the main character, generate again
+        do
+        {
+            randXPos = 10 + (std::rand() % (780 - 2 + 1));
+            randYPos = 10 + (std::rand() % (578 + 1));
+
+            doesCollide = false;
+            for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
+            {
+                auto width = (*obs)->getX2() - (*obs)->getX1();
+                auto height = (*obs)->getY2() - (*obs)->getY1();
+
+                if (Utils::collision(randXPos - 10, randYPos - 10, 20, 20, (*obs)->getX1(), (*obs)->getY1(), width, height))
+                {
+                    doesCollide = true;
+                    break;
+                }
+            }
+
+            if (Utils::collision(randXPos - 10, randYPos - 10, 20, 20,
+                                 mainCharacter->getCurrentXPosition(), mainCharacter->getCurrentYPosition(), 30, 30))
+            {
+                doesCollide = true;
+            }
+
+        } while (doesCollide);
 
         Point *point = new Point(this);
         point->setPosition(randXPos, randYPos);
         this->points.push_back(point);
     }
 }
+
+
 void Game::load(int time)
 {
 
+    Terrain *terrain = new Terrain(this);
+    terrain->load(time);
+    this->terrain = terrain;
+
     // Generate Obstacles
     generateObstacles();
-
-    // Generate Points
-    generatePoints();
-
-    //TODO: Generate Enemies
 
     MainCharacter *mainCharacter = new MainCharacter(this);
     mainCharacter->setInitialMotionPositionAndTime(500, 500, time);
     this->mainCharacter = mainCharacter;
     mainCharacter->load(time);
 
+
     Score *score = new Score(this);
     score->load(time);
     this->score = score;
 
-    Terrain *terrain = new Terrain(this);
-    terrain->load(time);
-    this->terrain = terrain;
+    // Generate Points
+    generatePoints();
 
-    // Generate
+    //TODO: Generate Enemies
+    
     Enemy *enemy1 = new Enemy(this);
     enemy1->setInitialMotionPositionAndTime(200, 200, time);
     this->enemies.push_back(enemy1);
@@ -175,13 +206,6 @@ void Game::load(int time)
     enemy2->setInitialMotionPositionAndTime(400, 400, time);
     this->enemies.push_back(enemy2);
 
-    // Obstacle *obstacle1 = new Obstacle(this);
-    // obstacle1->setPosition(90, 90, 140, 120);
-    // this->obstacles.push_back(obstacle1);
-
-    // Point *point1 = new Point(this);
-    // point1->setPosition(300, 300);
-    // this->points.push_back(point1);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->load(time);
