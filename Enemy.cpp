@@ -67,23 +67,23 @@ void Enemy::update(int time)
     switch (this->direction)
     {
     case UP:
-        this->offset_y = 9 * diffTime;
+        this->offset_y = 8 * diffTime;
         break;
     case DOWN:
-        this->offset_y = -9 * diffTime;
+        this->offset_y = -6 * diffTime;
         break;
     case LEFT:
-        this->offset_x = -9 * diffTime;
+        this->offset_x = -6 * diffTime;
         break;
     case RIGHT:
-        this->offset_x = 9 * diffTime;
+        this->offset_x = 6 * diffTime;
         break;
     default:
         break;
     }
 
     // Updating the frame of the character
-    this->current_frame = (this->init_frame + (1 * diffTime)) % 2;
+    this->current_frame = (this->init_frame + (3 * diffTime)) % 2;
 
     Game *game = dynamic_cast<Game *>(parent_component);
 
@@ -139,27 +139,34 @@ void Enemy::update(int time)
     auto width = 30;
     auto height = 30;
 
-    // TODO: CHANGE THE POSITION OF THE ENEMEY THEN SET DIRECTION
     for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
     {
         auto width2 = (*obs)->getX2() - (*obs)->getX1();
         auto height2 = (*obs)->getY2() - (*obs)->getY1();
 
-        if (Utils::collision((this->init_x + this->offset_x) - 15, (this->init_y + this->offset_y) - 15, width,
+        if (Utils::collision((this->init_x + this->offset_x) - 12, (this->init_y + this->offset_y) - 12, width,
                              height, (*obs)->getX1(), (*obs)->getY1(), width2, height2))
         {
             switch (direction)
             {
             case UP:
+                this->init_y = (this->init_y + this->offset_y) - 8;
+                this->offset_y = 0;
                 setDirection(DOWN, time);
                 break;
             case DOWN:
+                this->init_y = (this->init_y + this->offset_y) + 8;
+                this->offset_y = 0;
                 setDirection(UP, time);
                 break;
             case RIGHT:
+                this->init_x = (this->init_x + this->offset_x) - 8;
+                this->offset_x = 0;
                 setDirection(LEFT, time);
                 break;
             case LEFT:
+                this->init_x = (this->init_x + this->offset_x) + 8;
+                this->offset_x = 0;
                 setDirection(RIGHT, time);
                 break;
             default:

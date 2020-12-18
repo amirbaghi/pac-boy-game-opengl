@@ -112,7 +112,7 @@ void MainCharacter::update(int time)
 {
     if (this->motionState == MOVING)
     {
-        auto diffTime = (time - this->init_motion_time) / 200;
+        auto diffTime = (time - this->init_motion_time) / 185;
 
         // Updating the x and y values based on the direction
         switch (this->direction)
@@ -146,32 +146,36 @@ void MainCharacter::update(int time)
         auto width = 30;
         auto height = 30;
 
-        // TODO: DONT SET DIRECTION, CHANGE THE POSITION OF THE MAIN CHARACTER AND MAKE IT STOP
         for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
         {
             auto width2 = (*obs)->getX2() - (*obs)->getX1();
             auto height2 = (*obs)->getY2() - (*obs)->getY1();
 
-            if (Utils::collision((this->init_x + this->offset_x) - 15, (this->init_y + this->offset_y) - 15, width,
+            if (Utils::collision((this->init_x + this->offset_x) - 12, (this->init_y + this->offset_y) - 12, width,
                                  height, (*obs)->getX1(), (*obs)->getY1(), width2, height2))
             {
                 switch (direction)
                 {
                 case UP:
-                    setDirection(DOWN, time);
+                    this->init_y = (this->init_y + this->offset_y) - 8;
+                    this->offset_y = 0;
                     break;
                 case DOWN:
-                    setDirection(UP, time);
+                    this->init_y = (this->init_y + this->offset_y) + 8;
+                    this->offset_y = 0;
                     break;
                 case RIGHT:
-                    setDirection(LEFT, time);
+                    this->init_x = (this->init_x + this->offset_x) - 8;
+                    this->offset_x = 0;
                     break;
                 case LEFT:
-                    setDirection(RIGHT, time);
+                    this->init_x = (this->init_x + this->offset_x) + 8;
+                    this->offset_x = 0;
                     break;
                 default:
                     break;
                 }
+                stop(time);
                 break;
             }
         }

@@ -19,8 +19,6 @@ void init()
 {
     glEnable(GL_BLEND);
 
-    // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     game = new Game();
