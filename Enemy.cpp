@@ -1,11 +1,12 @@
 #include <iostream>
+#include <ctime>
+#include "Headers/Direction.h"
 #include "Headers/Enemy.h"
 #include "Headers/Game.h"
 #include "Headers/Component.h"
 #include "Headers/MainCharacter.h"
 #include "Headers/Obstacle.h"
 #include "Headers/Utils.h"
-#include <ctime>
 
 Enemy::Enemy(Component *parent) : Component(parent)
 {
@@ -48,7 +49,6 @@ void Enemy::load(int time)
     this->texture_id = txid;
 
     // Setting a random direction in the beginning
-    std::srand((unsigned int)std::time(NULL));
     auto randDirection = 0 + (std::rand() % (3 - 0 + 1));
 
     setDirection((Direction)randDirection, time);
@@ -104,15 +104,17 @@ void Enemy::update(int time)
             if (direction != UP)
             {
                 // Checking for obstacles between them, and if there is one, we shouldnt change direction
-                for (auto obs = obstacles.begin() ; obs < obstacles.end() ; obs++)
+                for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
                 {
-                    auto width2 = (*obs)->getX2() - (*obs)->getX1();
                     auto height2 = (*obs)->getY2() - (*obs)->getY1();
 
-                    if (abs(((*obs)->getX1() + (width2 / 2.0)) - (this->init_x + this->offset_x)) <= 15)
+                    if (((*obs)->getY1() + height2 / 2.0) >= (this->init_y + this->offset_y) && (((*obs)->getY1() + height2 / 2.0) <= mainCharacter->getCurrentYPosition()))
                     {
-                        shouldChangeDirection = false;
-                        break;
+                        if (((*obs)->getX1() <= (this->init_x + this->offset_x)) && ((this->init_x + this->offset_x) <= (*obs)->getX2()))
+                        {
+                            shouldChangeDirection = false;
+                            break;
+                        }
                     }
                 }
                 if (shouldChangeDirection)
@@ -127,15 +129,17 @@ void Enemy::update(int time)
             if (direction != DOWN)
             {
                 // Checking for obstacles between them, and if there is one, we shouldnt change direction
-                for (auto obs = obstacles.begin() ; obs < obstacles.end() ; obs++)
+                for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
                 {
-                    auto width2 = (*obs)->getX2() - (*obs)->getX1();
                     auto height2 = (*obs)->getY2() - (*obs)->getY1();
 
-                    if (abs(((*obs)->getX1() + (width2 / 2.0)) - (this->init_x + this->offset_x)) <= 15)
+                    if ((((*obs)->getY1() + height2 / 2.0) <= (this->init_y + this->offset_y)) && (((*obs)->getY1() + height2 / 2.0) >= mainCharacter->getCurrentYPosition()))
                     {
-                        shouldChangeDirection = false;
-                        break;
+                        if (((*obs)->getX1() <= (this->init_x + this->offset_x)) && ((this->init_x + this->offset_x) <= (*obs)->getX2()))
+                        {
+                            shouldChangeDirection = false;
+                            break;
+                        }
                     }
                 }
                 if (shouldChangeDirection)
@@ -155,15 +159,17 @@ void Enemy::update(int time)
             if (direction != RIGHT)
             {
                 // Checking for obstacles between them, and if there is one, we shouldnt change direction
-                for (auto obs = obstacles.begin() ; obs < obstacles.end() ; obs++)
+                for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
                 {
                     auto width2 = (*obs)->getX2() - (*obs)->getX1();
-                    auto height2 = (*obs)->getY2() - (*obs)->getY1();
 
-                    if (abs(((*obs)->getY1() + (height2 / 2.0)) - (this->init_y + this->offset_y)) <= 15)
+                    if (((*obs)->getX1() + width2 / 2.0) >= (this->init_x + this->offset_x) && (((*obs)->getX1() + width2 / 2.0) <= mainCharacter->getCurrentXPosition()))
                     {
-                        shouldChangeDirection = false;
-                        break;
+                        if (((*obs)->getY1() <= (this->init_y + this->offset_y)) && ((this->init_y + this->offset_y) <= (*obs)->getY2()))
+                        {
+                            shouldChangeDirection = false;
+                            break;
+                        }
                     }
                 }
                 if (shouldChangeDirection)
@@ -178,15 +184,17 @@ void Enemy::update(int time)
             if (direction != LEFT)
             {
                 // Checking for obstacles between them, and if there is one, we shouldnt change direction
-                for (auto obs = obstacles.begin() ; obs < obstacles.end() ; obs++)
+                for (auto obs = obstacles.begin(); obs < obstacles.end(); obs++)
                 {
                     auto width2 = (*obs)->getX2() - (*obs)->getX1();
-                    auto height2 = (*obs)->getY2() - (*obs)->getY1();
 
-                    if (abs(((*obs)->getY1() + (height2 / 2.0)) - (this->init_y + this->offset_y)) <= 15)
+                    if ((((*obs)->getX1() + width2 / 2.0) <= (this->init_x + this->offset_x)) && (((*obs)->getX1() + width2 / 2.0) >= mainCharacter->getCurrentXPosition()))
                     {
-                        shouldChangeDirection = false;
-                        break;
+                        if (((*obs)->getY1() <= (this->init_y + this->offset_y)) && ((this->init_y + this->offset_y) <= (*obs)->getY2()))
+                        {
+                            shouldChangeDirection = false;
+                            break;
+                        }
                     }
                 }
                 if (shouldChangeDirection)
@@ -199,7 +207,6 @@ void Enemy::update(int time)
 
     // Check for collision with an obstacle and change Direction based on that
 
-
     auto width = 30;
     auto height = 30;
 
@@ -211,27 +218,78 @@ void Enemy::update(int time)
         if (Utils::collision((this->init_x + this->offset_x) - 12, (this->init_y + this->offset_y) - 12, width,
                              height, (*obs)->getX1(), (*obs)->getY1(), width2, height2))
         {
+            bool sameDirection;
+            int newDir;
+
             switch (direction)
             {
             case UP:
                 this->init_y = (this->init_y + this->offset_y) - 8;
                 this->offset_y = 0;
-                setDirection(DOWN, time);
+
+                // Choosing a new random direction that is not the same as the one before
+                do
+                {
+                    newDir = 0 + (std::rand() % (3 - 0 + 1));
+
+                    sameDirection = false;
+                    if (newDir == UP)
+                        sameDirection = true;
+
+                } while (sameDirection);
+
+                setDirection((Direction)newDir, time);
                 break;
             case DOWN:
                 this->init_y = (this->init_y + this->offset_y) + 8;
                 this->offset_y = 0;
-                setDirection(UP, time);
+
+                // Choosing a new random direction that is not the same as the one before
+                do
+                {
+                    newDir = 0 + (std::rand() % (3 - 0 + 1));
+
+                    sameDirection = false;
+                    if (newDir == DOWN)
+                        sameDirection = true;
+
+                } while (sameDirection);
+
+                setDirection((Direction)newDir, time);
                 break;
             case RIGHT:
                 this->init_x = (this->init_x + this->offset_x) - 8;
                 this->offset_x = 0;
-                setDirection(LEFT, time);
+
+                // Choosing a new random direction that is not the same as the one before
+                do
+                {
+                    newDir = 0 + (std::rand() % (3 - 0 + 1));
+
+                    sameDirection = false;
+                    if (newDir == RIGHT)
+                        sameDirection = true;
+
+                } while (sameDirection);
+
+                setDirection((Direction)newDir, time);
                 break;
             case LEFT:
                 this->init_x = (this->init_x + this->offset_x) + 8;
                 this->offset_x = 0;
-                setDirection(RIGHT, time);
+
+                // Choosing a new random direction that is not the same as the one before
+                do
+                {
+                    newDir = 0 + (std::rand() % (3 - 0 + 1));
+
+                    sameDirection = false;
+                    if (newDir == LEFT)
+                        sameDirection = true;
+
+                } while (sameDirection);
+
+                setDirection((Direction)newDir, time);
                 break;
             default:
                 break;

@@ -112,7 +112,7 @@ void Game::generateObstacles()
     this->obstacles.push_back(obstacle10);
 
     Obstacle *obstacle11 = new Obstacle(this);
-    obstacle11->setPosition(324, 36, 464, 36 + 55, false);
+    obstacle11->setPosition(324, 40, 464, 36 + 55, false);
     this->obstacles.push_back(obstacle11);
 
     Obstacle *obstacle12 = new Obstacle(this);
@@ -172,6 +172,16 @@ void Game::generatePoints()
     }
 }
 
+void Game::generateEnemies(int time)
+{
+    Enemy *enemy1 = new Enemy(this);
+    enemy1->setInitialMotionPositionAndTime(230, 320, time);
+    this->enemies.push_back(enemy1);
+
+    Enemy *enemy2 = new Enemy(this);
+    enemy2->setInitialMotionPositionAndTime(560, 320, time);
+    this->enemies.push_back(enemy2);
+}
 
 void Game::load(int time)
 {
@@ -184,10 +194,9 @@ void Game::load(int time)
     generateObstacles();
 
     MainCharacter *mainCharacter = new MainCharacter(this);
-    mainCharacter->setInitialMotionPositionAndTime(500, 500, time);
+    mainCharacter->setInitialMotionPositionAndTime(400, 340, time);
     this->mainCharacter = mainCharacter;
     mainCharacter->load(time);
-
 
     Score *score = new Score(this);
     score->load(time);
@@ -196,16 +205,8 @@ void Game::load(int time)
     // Generate Points
     generatePoints();
 
-    //TODO: Generate Enemies
-    
-    Enemy *enemy1 = new Enemy(this);
-    enemy1->setInitialMotionPositionAndTime(200, 200, time);
-    this->enemies.push_back(enemy1);
-
-    Enemy *enemy2 = new Enemy(this);
-    enemy2->setInitialMotionPositionAndTime(400, 400, time);
-    this->enemies.push_back(enemy2);
-
+    // Generate Enemies
+    generateEnemies(time);
 
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->load(time);

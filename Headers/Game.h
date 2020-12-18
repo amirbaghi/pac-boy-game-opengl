@@ -24,6 +24,8 @@ public:
     void generateObstacles();
     // Method to generate points
     void generatePoints();
+    // Method to generate enemies
+    void generateEnemies(int time);
 
     // MainCharacter Getter
     MainCharacter *getMainCharacter();
