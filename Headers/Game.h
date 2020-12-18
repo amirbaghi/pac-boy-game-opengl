@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include "Component.h"
+#include "GameState.h"
 
 class Enemy;
 class MainCharacter;
@@ -38,12 +39,19 @@ public:
 
     // Points Setter
     void setPoints(std::vector<Point *> points);
+    // Game state Setter
+    void setGameState(GameState state);
 
     // Event handling methods
     void keyboard(int time, int key, int x, int y);
     void keyboard_up(int time, int key, int x, int y);
 
 private:
+    // State of the game, if it's on going or ended
+    GameState gameState;
+    // Texture id of the game's font sprite sheet
+    GLuint texture_id;
+
 protected:
     std::vector<Enemy *> enemies;
     std::vector<Obstacle *> obstacles;

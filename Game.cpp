@@ -1,3 +1,5 @@
+#include <ctime>
+#include <string>
 #include "Headers/Game.h"
 #include "Headers/MainCharacter.h"
 #include "Headers/Terrain.h"
@@ -6,7 +8,7 @@
 #include "Headers/Point.h"
 #include "Headers/Score.h"
 #include "Headers/Utils.h"
-#include <ctime>
+#include "Headers/GameState.h"
 
 Game::Game() : Component(NULL)
 {
@@ -37,6 +39,11 @@ void Game::setPoints(std::vector<Point *> points)
     this->points = points;
 }
 
+void Game::setGameState(GameState state)
+{
+    this->gameState = state;
+}
+
 Score *Game::getScore()
 {
     return this->score;
@@ -44,22 +51,25 @@ Score *Game::getScore()
 
 void Game::keyboard(int time, int key, int x, int y)
 {
-    switch (key)
+    if (gameState == ONGOING)
     {
-    case GLUT_KEY_UP:
-        mainCharacter->up(time);
-        break;
-    case GLUT_KEY_DOWN:
-        mainCharacter->down(time);
-        break;
-    case GLUT_KEY_RIGHT:
-        mainCharacter->right(time);
-        break;
-    case GLUT_KEY_LEFT:
-        mainCharacter->left(time);
-        break;
-    default:
-        break;
+        switch (key)
+        {
+        case GLUT_KEY_UP:
+            mainCharacter->up(time);
+            break;
+        case GLUT_KEY_DOWN:
+            mainCharacter->down(time);
+            break;
+        case GLUT_KEY_RIGHT:
+            mainCharacter->right(time);
+            break;
+        case GLUT_KEY_LEFT:
+            mainCharacter->left(time);
+            break;
+        default:
+            break;
+        }    
     }
 }
 
@@ -185,7 +195,6 @@ void Game::generateEnemies(int time)
 
 void Game::load(int time)
 {
-
     Terrain *terrain = new Terrain(this);
     terrain->load(time);
     this->terrain = terrain;
@@ -216,40 +225,139 @@ void Game::load(int time)
 
     for (auto point = this->points.begin(); point < this->points.end(); point++)
         (*point)->load(time);
+
+    GLuint txid = SOIL_load_OGL_texture("text_sprite.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+
+    this->texture_id = txid;
+
+    game->setGameState(ONGOING);
 }
 
 void Game::update(int time)
 {
-    // TODO: check if the game is over now, all the points are taken
-    mainCharacter->update(time);
+    if (game->gameState == ONGOING)
+    {
+        mainCharacter->update(time);
 
-    terrain->update(time);
+        terrain->update(time);
 
-    for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
-        (*enemy)->update(time);
+        for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
+            (*enemy)->update(time);
 
-    for (auto obs = this->obstacles.begin(); obs < this->obstacles.end(); obs++)
-        (*obs)->update(time);
+        for (auto obs = this->obstacles.begin(); obs < this->obstacles.end(); obs++)
+            (*obs)->update(time);
 
-    for (auto point = this->points.begin(); point < this->points.end(); point++)
-        (*point)->update(time);
+        for (auto point = this->points.begin(); point < this->points.end(); point++)
+            (*point)->update(time);
 
-    score->update(time);
+        score->update(time);
+    }
 }
 
 void Game::render(int time)
 {
+
     terrain->render(time);
     mainCharacter->render(time);
-
     for (auto enemy = this->enemies.begin(); enemy < this->enemies.end(); enemy++)
         (*enemy)->render(time);
-
     for (auto obs = this->obstacles.begin(); obs < this->obstacles.end(); obs++)
         (*obs)->render(time);
-
     for (auto point = this->points.begin(); point < this->points.end(); point++)
         (*point)->render(time);
-
     score->render(time);
+
+    // If the game is won, print a message
+    if (gameState == END_WIN)
+    {
+        std::string message = "YOU WON THE GAME!";
+
+        auto col_error = 1 / (7 * 16.0);
+        auto row_error = 1 / (6 * 28.0);
+        int count = 0;
+
+        for (auto it = message.begin(); it < message.end(); it++, count++)
+        {
+            if ((*it) == ' ')
+            {
+                count++;
+                continue;
+            }
+
+            auto spriteFrame = (*it) - 'A';
+            auto spriteRow = 1;
+
+            if ((*it) == '!')
+            {
+                spriteFrame = 11;
+                spriteRow = 0;
+            }
+            else if (spriteFrame > 15)
+            {
+                spriteFrame += 1;
+                spriteRow = 0;
+            } 
+
+            glPushMatrix();
+            glTranslatef(265 + (17 * count), 320, 0);
+            glBindTexture(GL_TEXTURE_2D, this->texture_id);
+            glBegin(GL_QUADS);
+            glTexCoord2f((spriteFrame % 16) * (1 / 16.0) + col_error, (spriteRow * 1 / 28.0) + 2 / 28.0 + row_error);
+            glVertex2f(-17 / 2.0, -17 / 2.0);
+            glTexCoord2f((spriteFrame % 16) * (1 / 16.0) + 1 / 16.0, (spriteRow * 1 / 28.0) + 2 / 28.0 + row_error);
+            glVertex2f(17 / 2.0, -17 / 2.0);
+            glTexCoord2f((spriteFrame % 16) * (1 / 16.0) + 1 / 16.0, (spriteRow * 1 / 28.0) + 2 / 28.0 + 1 / 28.0);
+            glVertex2f(17 / 2.0, 17 / 2.0);
+            glTexCoord2f((spriteFrame % 16) * (1 / 16.0) + col_error, (spriteRow * 1 / 28.0) + 2 / 28.0 + 1 / 28.0);
+            glVertex2f(-17 / 2.0, 17 / 2.0);
+            glEnd();
+            glPopMatrix();
+        }
+    }
+    else if (gameState == END_LOSE)
+    {
+        std::string message = "YOU LOST THE GAME!";
+
+        auto col_error = 1 / (7 * 16.0);
+        auto row_error = 1 / (6 * 28.0);
+        int count = 0;
+
+        for (auto it = message.begin(); it < message.end(); it++, count++)
+        {
+            if ((*it) == ' ')
+            {
+                count++;
+                continue;
+            }
+
+            auto spriteFrame = (*it) - 'A';
+            auto spriteRow = 1;
+
+            if ((*it) == '!')
+            {
+                spriteFrame = 11;
+                spriteRow = 0;
+            }
+            else if (spriteFrame > 15)
+            {
+                spriteFrame += 1;
+                spriteRow = 0;
+            } 
+
+            glPushMatrix();
+            glTranslatef(265 + (17 * count), 320, 0);
+            glBindTexture(GL_TEXTURE_2D, this->texture_id);
+            glBegin(GL_QUADS);
+            glTexCoord2f((spriteFrame % 16) * (1 / 16.0) + col_error, (spriteRow * 1 / 28.0) + 2 / 28.0 + row_error);
+            glVertex2f(-17 / 2.0, -17 / 2.0);
+            glTexCoord2f((spriteFrame % 16) * (1 / 16.0) + 1 / 16.0, (spriteRow * 1 / 28.0) + 2 / 28.0 + row_error);
+            glVertex2f(17 / 2.0, -17 / 2.0);
+            glTexCoord2f((spriteFrame % 16) * (1 / 16.0) + 1 / 16.0, (spriteRow * 1 / 28.0) + 2 / 28.0 + 1 / 28.0);
+            glVertex2f(17 / 2.0, 17 / 2.0);
+            glTexCoord2f((spriteFrame % 16) * (1 / 16.0) + col_error, (spriteRow * 1 / 28.0) + 2 / 28.0 + 1 / 28.0);
+            glVertex2f(-17 / 2.0, 17 / 2.0);
+            glEnd();
+            glPopMatrix();
+        }
+    }
 }

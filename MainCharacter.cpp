@@ -4,6 +4,7 @@
 #include "Headers/Point.h"
 #include "Headers/Utils.h"
 #include "Headers/Score.h"
+#include "Headers/GameState.h"
 #include <iostream>
 #include <ctime>
 
@@ -185,6 +186,7 @@ void MainCharacter::update(int time)
         }
 
         // Check for collision with a point, if found, remove the point from the points list and add to score
+        // Also if the points are all taken, set the state of the game to END_WIN
         if (!points.empty())
         {
             for (auto point = points.end() - 1; point >= points.begin(); point--)
@@ -193,6 +195,10 @@ void MainCharacter::update(int time)
                                      (*point)->getXPosition() + 5, (*point)->getYPosition() + 5, 10, 10))
                 {
                     point = points.erase(point);
+                    if (points.empty())
+                    {
+                        game->setGameState(END_WIN);
+                    }
                     score->setScore(score->getScore() + 1);
                     game->setPoints(points);                
                     break;
@@ -221,8 +227,8 @@ void MainCharacter::update(int time)
     }
     else if (this->motionState == STANDING)
     {
-        setInitialFrame(0);
-        setFrame(0);
+        setInitialFrame(1);
+        setFrame(1);
     }
 }
 

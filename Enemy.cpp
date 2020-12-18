@@ -298,7 +298,12 @@ void Enemy::update(int time)
         }
     }
 
-    // TODO: check for collision with the main character and end the game if so
+    // Check for collision with the main character and end the game if so
+    if (Utils::collision((this->init_x + this->offset_x) - 12, (this->init_y + this->offset_y) - 12, width,
+                             height, mainCharacter->getCurrentXPosition(), mainCharacter->getCurrentYPosition(), 12, 12))
+    {
+        game->setGameState(END_LOSE);
+    }
 
     // Check if it's out of bounds or not
     if ((this->init_x + this->offset_x) >= 800.0)

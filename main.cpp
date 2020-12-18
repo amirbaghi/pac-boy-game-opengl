@@ -41,10 +41,16 @@ void render()
     glutSwapBuffers();
 }
 
-void mouse(int button, int state, int x, int y)
+void keyboard_options(unsigned char key, int x, int y)
 {
-    auto H = glutGet(GLUT_WINDOW_HEIGHT);
-    std::cout << x << ' ' << H - y << std::endl;
+
+    switch (key)
+    {
+    case 'q':
+    case 'Q':
+        exit(0);
+        break;
+    }
 }
 
 int main(int argc, char **argv)
@@ -66,7 +72,7 @@ int main(int argc, char **argv)
     glutSpecialFunc(keyboard);
     glutIgnoreKeyRepeat(1);
     glutSpecialUpFunc(keyboard_up);
-    glutMouseFunc(mouse);
+    glutKeyboardFunc(keyboard_options);
     glutMainLoop();
 
     delete game;
