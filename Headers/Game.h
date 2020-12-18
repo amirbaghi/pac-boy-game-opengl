@@ -20,10 +20,20 @@ public:
     void update(int time);
     void render(int time);
 
+    // Method to generate obstacles
+    void generateObstacles();
+
     // MainCharacter Getter
     MainCharacter *getMainCharacter();
     // Obstacles Getter
     std::vector<Obstacle *> getObstacles();
+    // Points Getter
+    std::vector<Point *> getPoints();
+    // Score Getter
+    Score *getScore();
+
+    // Points Setter
+    void setPoints(std::vector<Point *> points);
 
     // Event handling methods
     void keyboard(int time, int key, int x, int y);

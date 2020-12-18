@@ -22,12 +22,14 @@ public:
     // y2 Getter
     int getY2();
 
-    // Method to set the position of this obstacle
-    void setPosition(int x1, int y1, int x2, int y2);
+    // Method to set the position of this obstacle and the alignment of it 
+    void setPosition(int x1, int y1, int x2, int y2, bool isVertical);
 
 private:
     // Lower-left corner of the rectangle (x1, y1) and the upper-right one (x2, y2)
     int x1, x2, y1, y2;
+    // Is to be placed vertical or horizontal
+    bool isVertical;
     // Texture id of the obstacle
     GLuint texture_id;
 

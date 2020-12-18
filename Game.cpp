@@ -25,6 +25,21 @@ std::vector<Obstacle *> Game::getObstacles()
     return this->obstacles;
 }
 
+std::vector<Point *> Game::getPoints()
+{
+    return this->points;
+}
+
+void Game::setPoints(std::vector<Point *> points)
+{
+    this->points = points;
+}
+
+Score* Game::getScore()
+{
+    return this->score;
+}
+
 void Game::keyboard(int time, int key, int x, int y)
 {
     switch (key)
@@ -51,8 +66,78 @@ void Game::keyboard_up(int time, int key, int x, int y)
     mainCharacter->stop(time);
 }
 
+void Game::generateObstacles()
+{
+
+    Obstacle *obstacle1 = new Obstacle(this);
+    obstacle1->setPosition(50, 500, 170, 555, false);
+    this->obstacles.push_back(obstacle1);
+
+    Obstacle *obstacle2 = new Obstacle(this);
+    obstacle2->setPosition(50, 360, 170, 360 + 55, false);
+    this->obstacles.push_back(obstacle2);
+
+    Obstacle *obstacle3 = new Obstacle(this);
+    obstacle3->setPosition(50, 170, 170, 170 + 55, false);
+    this->obstacles.push_back(obstacle3);
+
+    Obstacle *obstacle4 = new Obstacle(this);
+    obstacle4->setPosition(170, 82, 170 + 60, 170 + 55, true);
+    this->obstacles.push_back(obstacle4);
+
+    Obstacle *obstacle5 = new Obstacle(this);
+    obstacle5->setPosition(235, 500, 355, 555, false);
+    this->obstacles.push_back(obstacle5);
+
+    Obstacle *obstacle6 = new Obstacle(this);
+    obstacle6->setPosition(445, 500, 565, 555, false);
+    this->obstacles.push_back(obstacle6);
+
+    Obstacle *obstacle7 = new Obstacle(this);
+    obstacle7->setPosition(630, 500, 750, 555, false);
+    this->obstacles.push_back(obstacle7);
+
+    Obstacle *obstacle8 = new Obstacle(this);
+    obstacle8->setPosition(630, 360, 750, 360 + 55, false);
+    this->obstacles.push_back(obstacle8);
+
+    Obstacle *obstacle9 = new Obstacle(this);
+    obstacle9->setPosition(630, 170, 750, 170 + 55, false);
+    this->obstacles.push_back(obstacle9);
+
+    Obstacle *obstacle10 = new Obstacle(this);
+    obstacle10->setPosition(630 - 60, 82, 630, 170 + 55, true);
+    this->obstacles.push_back(obstacle10);
+
+    Obstacle *obstacle11 = new Obstacle(this);
+    obstacle11->setPosition(324, 36, 464, 36 + 55, false);
+    this->obstacles.push_back(obstacle11);
+
+    Obstacle *obstacle12 = new Obstacle(this);
+    obstacle12->setPosition(324 + 41, 82, 324 + 41 + 60, 170 + 55, true);
+    this->obstacles.push_back(obstacle12);
+
+    Obstacle *obstacle13 = new Obstacle(this);
+    obstacle13->setPosition(278, 275, 278 + 60, 275 + 143, true);
+    this->obstacles.push_back(obstacle13);
+
+    Obstacle *obstacle14 = new Obstacle(this);
+    obstacle14->setPosition(522 - 60, 275, 522, 275 + 143, true);
+    this->obstacles.push_back(obstacle14);
+
+}
 void Game::load(int time)
 {
+
+    // Generate Obstacles
+    generateObstacles();
+
+
+    //TODO: Generate Points
+
+
+    //TODO: Generate Enemies
+
 
     MainCharacter *mainCharacter = new MainCharacter(this);
     mainCharacter->setInitialMotionPositionAndTime(500, 500, time);
@@ -67,6 +152,7 @@ void Game::load(int time)
     terrain->load(time);
     this->terrain = terrain;
 
+    // Generate 
     Enemy *enemy1 = new Enemy(this);
     enemy1->setInitialMotionPositionAndTime(200, 200, time);
     this->enemies.push_back(enemy1);
@@ -75,9 +161,9 @@ void Game::load(int time)
     enemy2->setInitialMotionPositionAndTime(400, 400, time);
     this->enemies.push_back(enemy2);
 
-    Obstacle *obstacle1 = new Obstacle(this);
-    obstacle1->setPosition(90, 90, 120, 120);
-    this->obstacles.push_back(obstacle1);
+    // Obstacle *obstacle1 = new Obstacle(this);
+    // obstacle1->setPosition(90, 90, 140, 120);
+    // this->obstacles.push_back(obstacle1);
 
     Point *point1 = new Point(this);
     point1->setPosition(300, 300);
@@ -97,7 +183,6 @@ void Game::update(int time)
 {
     // TODO: check if the game is over now, all the points are taken
     mainCharacter->update(time);
-
 
     terrain->update(time);
 

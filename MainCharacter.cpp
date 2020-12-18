@@ -1,7 +1,9 @@
 #include "Headers/MainCharacter.h"
 #include "Headers/Game.h"
 #include "Headers/Obstacle.h"
+#include "Headers/Point.h"
 #include "Headers/Utils.h"
+#include "Headers/Score.h"
 
 MainCharacter::MainCharacter(Component *parent) : Component(parent)
 {
@@ -136,9 +138,11 @@ void MainCharacter::update(int time)
         this->current_frame = (this->init_frame + (1 * diffTime)) % 2;
 
         Game *game = dynamic_cast<Game *>(parent_component);
+        std::vector<Obstacle *> obstacles = game->getObstacles();
+        std::vector<Point *> points = game->getPoints();
+        Score *score = game->getScore();
 
         // Check for collision with an obstacle
-        std::vector<Obstacle *> obstacles = game->getObstacles();
 
         auto width = 30;
         auto height = 30;
@@ -177,7 +181,22 @@ void MainCharacter::update(int time)
             }
         }
 
-        // TODO: check for collision with a point and add to score
+        // Check for collision with a point, if found, remove the point from the points list and add to score
+        if (!points.empty())
+        {
+            for (auto point = points.end() - 1; point >= points.begin(); point--)
+            {
+                if (Utils::collision((this->init_x + this->offset_x) - 15, (this->init_y + this->offset_y) - 15, 30, 30,
+                                     (*point)->getXPosition() + 5, (*point)->getYPosition() + 5, 10, 10))
+                {
+                    point = points.erase(point);
+                    score->setScore(score->getScore() + 1);
+                    game->setPoints(points);                
+                    break;
+                }
+            }
+        }
+        
 
         // Check if it's out of bounds or not
         if ((this->init_x + this->offset_x) >= 800.0)

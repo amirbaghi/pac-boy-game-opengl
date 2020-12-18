@@ -11,6 +11,16 @@ Point::~Point()
 
 }
 
+int Point::getXPosition()
+{
+    return this->x;
+}
+
+int Point::getYPosition()
+{
+    return this->y;
+}
+
 void Point::setPosition(int x, int y)
 {
     this->x = x;

@@ -15,6 +15,10 @@ public:
 
     // Set the position of the point
     void setPosition(int x, int y);
+    // Get the x position of the point
+    int getXPosition();
+    // Get the y position of the point
+    int getYPosition();
 
 private:
     // Position of the point

@@ -1,4 +1,5 @@
 #include "Headers/Game.h"
+#include <iostream>
 #include <GL/glut.h>
 
 Game *game;
@@ -40,6 +41,12 @@ void render()
     glutSwapBuffers();
 }
 
+void mouse(int button, int state, int x, int y)
+{
+    auto H = glutGet(GLUT_WINDOW_HEIGHT);
+    std::cout << x << ' ' << H - y << std::endl;
+}
+
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
@@ -59,6 +66,7 @@ int main(int argc, char **argv)
     glutSpecialFunc(keyboard);
     glutIgnoreKeyRepeat(1);
     glutSpecialUpFunc(keyboard_up);
+    glutMouseFunc(mouse);
     glutMainLoop();
 
     delete game;
