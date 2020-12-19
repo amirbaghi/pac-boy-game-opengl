@@ -49,7 +49,7 @@ void Enemy::setInitialFrame(int frame)
 void Enemy::load(int time)
 {
 
-    GLuint txid = SOIL_load_OGL_texture("character_sprite.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    GLuint txid = SOIL_load_OGL_texture("Resources/character_sprite.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 
     this->texture_id = txid;
 

@@ -31,7 +31,7 @@ void Point::load(int time)
 {
 
     glEnable(GL_TEXTURE_2D);
-    GLuint txid = SOIL_load_OGL_texture("point.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    GLuint txid = SOIL_load_OGL_texture("Resources/point.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 
     this->texture_id = txid;
 }

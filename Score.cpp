@@ -26,7 +26,7 @@ void Score::load(int time)
     this->score = 0;
 
     // Load texture
-    GLuint txid = SOIL_load_OGL_texture("text_sprite.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    GLuint txid = SOIL_load_OGL_texture("Resources/text_sprite.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 
     this->texture_id = txid;
 }

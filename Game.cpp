@@ -226,7 +226,7 @@ void Game::load(int time)
     for (auto point = this->points.begin(); point < this->points.end(); point++)
         (*point)->load(time);
 
-    GLuint txid = SOIL_load_OGL_texture("text_sprite.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    GLuint txid = SOIL_load_OGL_texture("Resources/text_sprite.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 
     this->texture_id = txid;
 

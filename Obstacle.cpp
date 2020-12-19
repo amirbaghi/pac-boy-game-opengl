@@ -42,7 +42,7 @@ void Obstacle::setPosition(int x1, int y1, int x2, int y2, bool isVertical)
 void Obstacle::load(int time)
 {
 
-    GLuint txid = SOIL_load_OGL_texture("bricks.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    GLuint txid = SOIL_load_OGL_texture("Resources/bricks.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 
     this->texture_id = txid;
 }
