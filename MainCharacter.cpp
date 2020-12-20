@@ -61,7 +61,6 @@ void MainCharacter::up(int time)
     this->motionState = MOVING;
     this->setDirection(UP, time);
 
-    //TODO: Maybe randomize init frame?
 }
 
 void MainCharacter::down(int time)
@@ -69,7 +68,6 @@ void MainCharacter::down(int time)
     this->motionState = MOVING;
     this->setDirection(DOWN, time);
 
-    //TODO: Maybe randomize init frame?
 }
 
 void MainCharacter::right(int time)
@@ -77,7 +75,6 @@ void MainCharacter::right(int time)
     this->motionState = MOVING;
     this->setDirection(RIGHT, time);
 
-    //TODO: Maybe randomize init frame?
 }
 
 void MainCharacter::left(int time)
@@ -85,7 +82,6 @@ void MainCharacter::left(int time)
     this->motionState = MOVING;
     this->setDirection(LEFT, time);
 
-    //TODO: Maybe randomize init frame?
 }
 
 void MainCharacter::stop(int time)
@@ -261,7 +257,6 @@ void MainCharacter::render(int time)
 
     auto col_error = 1 / (6 * 14.0);
     auto row_error = 1 / (6 * 8.0);
-    // spriteCol += col_error;
 
     glBindTexture(GL_TEXTURE_2D, this->texture_id);
     glBegin(GL_QUADS);
